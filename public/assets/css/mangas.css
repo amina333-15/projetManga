@@ -1,0 +1,11 @@
+.bvn{
+    text-align: center;
+}
+img {
+    max-height: 120px;
+    border: 1px solid #ccc;       /* Contour gris clair */
+    border-radius: 8px;          /* Bords arrondis */
+    padding: 4px;                 /* Espace intérieur autour de l'image */
+    background-color: #fff;       /* Fond blanc pour mieux faire ressortir */
+}
+
