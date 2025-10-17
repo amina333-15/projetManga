@@ -34,7 +34,7 @@
                 </td>
                 <td>
                     <a onclick="return confirm('Supprimer ce manga ?')"
-                       href="{{url('/')}}"><i class="bi bi-trash"></i></a>
+                       href="{{route('removeManga',$manga->id_manga)}}"><i class="bi bi-trash"></i></a>
                 </td>
         @endforeach
 

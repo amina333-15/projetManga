@@ -54,4 +54,19 @@ class MangaService
             throw new UserException($userMessage, $exception->getMessage(), $exception->getCode());
         }
     }
+    public function deleteManga($id)
+    {
+        try{
+        $manga = Manga::find($id);
+
+        if ($manga) {
+            $manga->delete();
+        } else {
+            echo "Le manga avec l'ID $id est introuvable.";
+        }
+        } catch(QueryException $exception){
+        $userMessage="Impossible d'accéder à la base de données.";
+        throw new UserException($userMessage, $exception->getMessage(), $exception->getCode());
+    }}
+
 }

@@ -22,9 +22,9 @@
             <div class="form-group">
                 <label class="col-md-3">Genre :</label>
                 <div class="col-md-6">
-                    <select class="form-select" name="lib_genre">
+                    <select class="form-select @error('genre') border-danger @enderror" name="lib_genre">
                         @foreach($genres as $genre)
-                            <option value="{{ $genre->id_genre }}" @if ($manga->id_genre == $genre->id_genre) selected @endif>
+                            <option value="{{ $genre->id_genre }}" @if ($manga->id_genre == $genre->id_genre) @endif >
                                 {{ $genre->lib_genre }}</option>
                         @endforeach
                     </select>
@@ -91,4 +91,15 @@
 
         </div>
     </form>
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
 @endsection
