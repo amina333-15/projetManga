@@ -30,7 +30,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('listMangas') }}">Tous</a></li>
-                            <li><a class="dropdown-item" href="{{ url('/') }}">Par genre</a></li>
+                            <li><a class="dropdown-item" href="{{ route('selectGenre') }}">Par genre</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">

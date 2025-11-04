@@ -36,7 +36,7 @@
             <div class="form-group">
                 <label class="col-md-3">Dessinateur :</label>
                 <div class="col-md-6">
-                    <select class="form-select" name="nom_dessinateur">
+                    <select class="form-select @error('dessinateur') border-danger @enderror" name="nom_dessinateur">
                         @foreach($dessinateurs as $dessinateur)
                             <option value="{{ $dessinateur->id_dessinateur }}" @if ($manga->id_dessinateur == $dessinateur->id_dessinateur) selected @endif>{{ $dessinateur->nom_dessinateur }}</option>
                         @endforeach
@@ -47,7 +47,7 @@
 
             <div class="form-group">
                 <label class="col-md-3">Scénariste :</label>
-                <select name="id_scenariste" class="form-select" required>
+                <select class="form-select @error('scenariste') border-danger @enderror" name="id_scenariste"  required>
                     @foreach($scenaristes as $scenariste)
                         <option value="{{ $scenariste->id_scenariste }}" @if($manga->id_scenariste == $scenariste->id_scenariste) selected @endif>
                             {{ $scenariste->nom_scenariste }}
@@ -58,14 +58,14 @@
 
 <!------------------ Prix ------------------>
             <div class="form-group">
-                <label class="col-md-3">Prix (€) :</label>
+                <label class="col-md-3 @error('prix') border-danger @enderror">Prix (€) :</label>
                 <input type="number" step="0.01" name="prix" value="{{ old('prix', $manga->prix) }}" class="form-control" required>
             </div>
 
 <!----------------- Image de couverture ---------------->
             <div class="form-group">
                 <label class="col-md-3">Couverture :</label>
-                <div class="col-md-6">
+                <div class="col-md-6 @error('couv') border-danger @enderror">
                     <input type="hidden" name="MAX-FILE-SIZE" value="204800">
                     <input type="file" accept="image/*" name="couv" class="form-control">
                 </div>

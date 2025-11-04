@@ -52,8 +52,8 @@ class MangaController extends Controller
         $manga = new Manga();
         }
         $manga->titre = $request->input('titre');
-        $manga->id_genre = $request->input('id_genre');
-        $manga->id_dessinateur = $request->input('id_dessinateur');
+        $manga->id_genre = $request->input('lib_genre');
+        $manga->id_dessinateur = $request->input('nom_dessinateur');
         $manga->id_scenariste = $request->input('id_scenariste');
         $manga->prix = $request->input('prix');
 
@@ -66,13 +66,13 @@ class MangaController extends Controller
             try {
                 $request->validate([
                     'titre' => 'required|max:250',
-                    'genre' => 'required|exists:genres,id_genre',
-                    'dessinateur' => 'required|exists:dessinateur,id_dessinateur',
-                    'scenariste' => 'required|exists:scenariste,id_scenariste',
+                    'lib_genre' => 'required|exists:genre,id_genre',
+                    'nom_dessinateur' => 'required|exists:dessinateur,id_dessinateur',
+                    'id_scenariste' => 'required|exists:scenariste,id_scenariste',
                     'prix' => 'required|numeric|between:0,1000',
                 ]);
                 if (!$manga->couverture){
-                    throw ValidationException::withMessages(['couverture' => 'vous devez fournir une image de couverture']);
+                    throw ValidationException::withMessages(['couv' => 'vous devez fournir une image de couverture']);
                 }
         }catch (validationException $exception)
             {
@@ -119,6 +119,21 @@ public function editManga($id){
         $serviceS = new ScenaristeService();
         $scenaristes = $serviceS->getListScenariste();
         return view('formMangas', compact('manga', 'genres', 'dessinateurs', 'scenaristes'));
+    }
+
+    public function selectGenre(Request $request){
+
+        try {
+            $service = new MangaService();
+            $genres = $service->getListMangasGenre();
+            return view('listMangasGenre', compact('genres'));
+        } catch (Exception $exception) {
+            return view('error', compact('exception'));
+        }
+
+    }
+    public function validGenre(Request $request){
+
     }
 
 }
