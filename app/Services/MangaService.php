@@ -9,38 +9,33 @@ use Illuminate\Database\QueryException;
 
 class MangaService
 {
-    public function getListMangas(){
+    public function getListMangas()
+    {
         try {
-            $liste = Manga::query()
-                ->select('manga.*', 'genre.lib_genre','dessinateur.nom_dessinateur','scenariste.nom_scenariste')
-                ->join('genre','genre.id_genre', '=','manga.id_genre')
-                ->join('dessinateur','dessinateur.id_dessinateur', '=','manga.id_dessinateur')
-                ->join('scenariste','scenariste.id_scenariste', '=','manga.id_scenariste')
+            return Manga::query()
+                ->select('manga.*', 'genre.lib_genre', 'dessinateur.nom_dessinateur', 'scenariste.nom_scenariste')
+                ->join('genre', 'genre.id_genre', '=', 'manga.id_genre')
+                ->join('dessinateur', 'dessinateur.id_dessinateur', '=', 'manga.id_dessinateur')
+                ->join('scenariste', 'scenariste.id_scenariste', '=', 'manga.id_scenariste')
                 ->get();
-            return $liste;
-        } catch(QueryException $exception){
-            $userMessage="Impossible d'accéder à la base de données.";
-            throw new UserException($userMessage, $exception->getMessage(), $exception->getCode());
+        } catch (QueryException $exception) {
+            throw new UserException("Impossible d'accéder à la base de données.", $exception->getMessage(), $exception->getCode());
         }
     }
 
-    public function saveManga(Manga $manga){
+    public function saveManga(Manga $manga)
+    {
         try {
             $manga->save();
-        } catch(QueryException $exception) {
-            if (!$manga->titre) {
-                $userMessage = "Vous devez renseigner un titre.";
-            } else if (!$manga->id_genre) {
-                $userMessage = "Vous devez séléctionner un genre.";
-            } else if (!$manga->id_dessinateur) {
-                $userMessage = "Vous devez séléctionner un dessinateur.";
-            } else if (!$manga->id_scenariste) {
-                $userMessage = "Vous devez séléctionner un scenariste.";
-            } else if (!$manga->couverture) {
-                $userMessage = "Vous devez séléctionner une couverture.";
-            } else {
-                $userMessage = "Impossible de mettre à jour la base de données.";
-            }
+        } catch (QueryException $exception) {
+            $userMessage = match (true) {
+                !$manga->titre => "Vous devez renseigner un titre.",
+                !$manga->id_genre => "Vous devez sélectionner un genre.",
+                !$manga->id_dessinateur => "Vous devez sélectionner un dessinateur.",
+                !$manga->id_scenariste => "Vous devez sélectionner un scénariste.",
+                !$manga->couverture => "Vous devez fournir une couverture.",
+                default => "Impossible de mettre à jour la base de données.",
+            };
             throw new UserException($userMessage, $exception->getMessage(), $exception->getCode());
         }
     }
@@ -48,50 +43,47 @@ class MangaService
     public function getManga(mixed $id)
     {
         try {
-            $manga = Manga::query()->find($id);
-            return $manga;
-        } catch(QueryException $exception){
-            $userMessage="Impossible d'accéder à la base de données.";
-            throw new UserException($userMessage, $exception->getMessage(), $exception->getCode());
+            return Manga::find($id);
+        } catch (QueryException $exception) {
+            throw new UserException("Impossible d'accéder à la base de données.", $exception->getMessage(), $exception->getCode());
         }
     }
+
     public function deleteManga($id)
     {
-        try{
-        $manga = Manga::find($id);
-
-        if ($manga) {
-            $manga->delete();
-        } else {
-            echo "Le manga avec l'ID $id est introuvable.";
-        }
-        } catch(QueryException $exception){
-        $userMessage="Impossible d'accéder à la base de données.";
-        throw new UserException($userMessage, $exception->getMessage(), $exception->getCode());
-    }}
-
-
-        public function getListMangasGenre()
-        {
-            try {
-                $liste = Genre::query()
-                    ->select(
-                        'manga.*',
-                        'genre.lib_genre',
-                        'dessinateur.nom_dessinateur',
-                        'scenariste.nom_scenariste'
-                    )
-                    ->join('genre', 'genre.id_genre', '=', 'manga.id_genre')
-                    ->join('dessinateur', 'dessinateur.id_dessinateur', '=', 'manga.id_dessinateur')
-                    ->join('scenariste', 'scenariste.id_scenariste', '=', 'manga.id_scenariste')
-                    ->get();
-
-                return $liste;
-            } catch (\Illuminate\Database\QueryException $exception) {
-                $userMessage = "Impossible d'accéder à la base de données.";
-                throw new UserException($userMessage, $exception->getMessage(), $exception->getCode());
+        try {
+            $manga = Manga::find($id);
+            if ($manga) {
+                $manga->delete();
+            } else {
+                throw new UserException("Le manga avec l'ID $id est introuvable.");
             }
+        } catch (QueryException $exception) {
+            throw new UserException("Impossible d'accéder à la base de données.", $exception->getMessage(), $exception->getCode());
         }
+    }
 
+    public function getMangasByGenre($idGenre)
+    {
+        try {
+            return Manga::query()
+                ->select('manga.*', 'genre.lib_genre', 'dessinateur.nom_dessinateur', 'scenariste.nom_scenariste')
+                ->join('genre', 'genre.id_genre', '=', 'manga.id_genre')
+                ->join('dessinateur', 'dessinateur.id_dessinateur', '=', 'manga.id_dessinateur')
+                ->join('scenariste', 'scenariste.id_scenariste', '=', 'manga.id_scenariste')
+                ->where('manga.id_genre', $idGenre)
+                ->get();
+        } catch (QueryException $exception) {
+            throw new UserException("Impossible d'accéder aux mangas du genre.", $exception->getMessage(), $exception->getCode());
+        }
+    }
 
+    public function getGenre($idGenre)
+    {
+        try {
+            return Genre::findOrFail($idGenre);
+        } catch (QueryException $exception) {
+            throw new UserException("Genre introuvable.", $exception->getMessage(), $exception->getCode());
+        }
+    }
 }

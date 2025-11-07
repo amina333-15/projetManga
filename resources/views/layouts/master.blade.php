@@ -4,6 +4,7 @@
 <head>
     <title>Application</title>
     <meta charset="UTF-8">
+    <link rel="icon" href="{{url('/assets/images/logo.png')}}" type="image/png">
     <link rel="stylesheet" href="{{url('/assets/css/mangas.css')}}">
     <link rel="stylesheet" href="{{ url('/assets/css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" href="{{ url('/assets/icons/bootstrap-icons.css') }}"/>

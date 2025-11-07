@@ -22,7 +22,8 @@
             <div class="form-group">
                 <label class="col-md-3">Genre :</label>
                 <div class="col-md-6">
-                    <select class="form-select @error('genre') border-danger @enderror" name="lib_genre">
+                    <select class="form-select @error('genre') border-danger @enderror" name="genre">
+                        <option disabled selected>Choisir un genre</option>
                         @foreach($genres as $genre)
                             <option value="{{ $genre->id_genre }}" @if ($manga->id_genre == $genre->id_genre) @endif >
                                 {{ $genre->lib_genre }}</option>
@@ -37,6 +38,7 @@
                 <label class="col-md-3">Dessinateur :</label>
                 <div class="col-md-6">
                     <select class="form-select @error('dessinateur') border-danger @enderror" name="nom_dessinateur">
+                        <option disabled selected>Choisir un dessinateur</option>
                         @foreach($dessinateurs as $dessinateur)
                             <option value="{{ $dessinateur->id_dessinateur }}" @if ($manga->id_dessinateur == $dessinateur->id_dessinateur) selected @endif>{{ $dessinateur->nom_dessinateur }}</option>
                         @endforeach
@@ -48,6 +50,7 @@
             <div class="form-group">
                 <label class="col-md-3">Scénariste :</label>
                 <select class="form-select @error('scenariste') border-danger @enderror" name="id_scenariste"  required>
+                    <option disabled selected>Choisir un scénariste</option>
                     @foreach($scenaristes as $scenariste)
                         <option value="{{ $scenariste->id_scenariste }}" @if($manga->id_scenariste == $scenariste->id_scenariste) selected @endif>
                             {{ $scenariste->nom_scenariste }}
