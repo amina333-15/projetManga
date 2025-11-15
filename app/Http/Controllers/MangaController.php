@@ -51,7 +51,7 @@ class MangaController extends Controller
             $manga->titre = $request->input('titre');
             $manga->id_genre = $request->input('genre');
             $manga->id_dessinateur = $request->input('nom_dessinateur');
-            $manga->id_scenariste = $request->input('id_scenariste');
+            $manga->id_scenariste = $request->input('nom_scenariste');
             $manga->prix = $request->input('prix');
 
             $couv = $request->file('couv');
@@ -64,7 +64,7 @@ class MangaController extends Controller
                 'titre' => 'required|max:250',
                 'genre' => 'required|exists:genre,id_genre',
                 'nom_dessinateur' => 'required|exists:dessinateur,id_dessinateur',
-                'id_scenariste' => 'required|exists:scenariste,id_scenariste',
+                'nom_scenariste' => 'required|exists:scenariste,id_scenariste',
                 'prix' => 'required|numeric|between:0,1000',
             ]);
 
