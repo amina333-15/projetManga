@@ -62,9 +62,9 @@ class MangaController extends Controller
 
             $request->validate([
                 'titre' => 'required|max:250',
-                'genre' => 'required|exists:genres,id_genre',
-                'nom_dessinateur' => 'required|exists:dessinateurs,id_dessinateur',
-                'id_scenariste' => 'required|exists:scenaristes,id_scenariste',
+                'genre' => 'required|exists:genre,id_genre',
+                'nom_dessinateur' => 'required|exists:dessinateur,id_dessinateur',
+                'id_scenariste' => 'required|exists:scenariste,id_scenariste',
                 'prix' => 'required|numeric|between:0,1000',
             ]);
 
@@ -131,7 +131,7 @@ class MangaController extends Controller
     {
         try {
             $request->validate([
-                'genre' => 'required|exists:genres,id_genre'
+                'genre' => 'required|exists:genre,id_genre'
             ]);
 
             $idGenre = $request->input('genre');
