@@ -12,7 +12,9 @@
             </ul>
         </div>
     @endif
+
     <form method="POST" action="{{ route('validGenre') }}" enctype="multipart/form-data">
+        @csrf
         <div class="form-group">
             <label for="genre">Genre :</label>
             <select name="genre" id="genre" class="form-select @error('genre') border-danger @enderror">
