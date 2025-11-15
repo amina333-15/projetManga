@@ -37,26 +37,28 @@
             <div class="form-group">
                 <label class="col-md-3">Dessinateur :</label>
                 <div class="col-md-6">
-                    <select class="form-select @error('dessinateur') border-danger @enderror" name="nom_dessinateur">
-                        <option disabled selected>Choisir un dessinateur</option>
-                        @foreach($dessinateurs as $dessinateur)
-                            <option value="{{ $dessinateur->id_dessinateur }}" @if ($manga->id_dessinateur == $dessinateur->id_dessinateur) selected @endif>{{ $dessinateur->nom_dessinateur }}</option>
-                        @endforeach
-                    </select>
+                    <select class="form-select @error('nom_dessinateur') border-danger @enderror" name="nom_dessinateur">
+    <option disabled selected>Choisir un dessinateur</option>
+    @foreach($dessinateurs as $dessinateur)
+        <option value="{{ $dessinateur->id_dessinateur }}" @if ($manga->id_dessinateur == $dessinateur->id_dessinateur) selected @endif>
+            {{ $dessinateur->nom_dessinateur }}
+        </option>
+    @endforeach
+</select>
                 </div>
             </div>
 <!------------ Scénariste ------------>
 
             <div class="form-group">
                 <label class="col-md-3">Scénariste :</label>
-                <select class="form-select @error('scenariste') border-danger @enderror" name="id_scenariste"  required>
-                    <option disabled selected>Choisir un scénariste</option>
-                    @foreach($scenaristes as $scenariste)
-                        <option value="{{ $scenariste->id_scenariste }}" @if($manga->id_scenariste == $scenariste->id_scenariste) selected @endif>
-                            {{ $scenariste->nom_scenariste }}
-                        </option>
-                    @endforeach
-                </select>
+                <select class="form-select @error('nom_scenariste') border-danger @enderror" name="nom_scenariste">
+    <option disabled selected>Choisir un scénariste</option>
+    @foreach($scenaristes as $scenariste)
+        <option value="{{ $scenariste->id_scenariste }}" @if ($manga->id_scenariste == $scenariste->id_scenariste) selected @endif>
+            {{ $scenariste->nom_scenariste }}
+        </option>
+    @endforeach
+</select>
             </div>
 
 <!------------------ Prix ------------------>
