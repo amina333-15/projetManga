@@ -86,4 +86,24 @@ class MangaService
             throw new UserException("Genre introuvable.", $exception->getMessage(), $exception->getCode());
         }
     }
+
+    public function searchMangas(string $query)
+{
+    try {
+        return Manga::query()
+            ->select('manga.*', 'genre.lib_genre', 'dessinateur.nom_dessinateur', 'scenariste.nom_scenariste')
+            ->join('genre', 'genre.id_genre', '=', 'manga.id_genre')
+            ->join('dessinateur', 'dessinateur.id_dessinateur', '=', 'manga.id_dessinateur')
+            ->join('scenariste', 'scenariste.id_scenariste', '=', 'manga.id_scenariste')
+            ->where(function ($q) use ($query) {
+                $q->where('manga.titre', 'like', "%{$query}%")
+                  ->orWhere('dessinateur.nom_dessinateur', 'like', "%{$query}%")
+                  ->orWhere('scenariste.nom_scenariste', 'like', "%{$query}%");
+            })
+            ->get();
+    } catch (QueryException $exception) {
+        throw new UserException("Impossible d'effectuer la recherche.", $exception->getMessage(), $exception->getCode());
+    }
+}
+
 }
