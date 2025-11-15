@@ -1,45 +1,28 @@
 @extends('layouts.master')
+
 @section('content')
-    <h1>Liste des Mangas</h1>
-    <table class="table table-bordered table-striped">
-        <thead>
-        <tr>
-            <th>Couverture</th>
-            <th>Titre</th>
-            <th>Prix</th>
-            <th>Genre</th>
-            <th>Dessinateur</th>
-            <th>Scénariste</th>
-            <th><i class="bi bi-pencil"></i></th>
-            <th><i class="bi bi-trash"></i></th>
+    <h2>{{ $titre ?? 'Liste des mangas' }}</h2>
 
-        </tr>
-        </thead>
-        @foreach($mangas as $manga)
-            <tr>
-                <td>
-                    @if(file_exists(public_path('assets/images/' . $manga->couverture)))
-                        <img src="{{ asset('assets/images/' . $manga->couverture) }}" alt="Couverture" style="height:150px;">
-                    @else
-                        <img src="{{ asset('assets/images/erreur.png') }}" alt="Image manquante" style="height:150px;">
-                    @endif
-                </td>
-                <td>{{$manga->titre}}</td>
-                <td>{{$manga->prix}}</td>
-                <td>{{$manga->lib_genre}}</td>
-                <td>{{$manga->nom_dessinateur}}</td>
-                <td>{{$manga->nom_scenariste}}</td>
-                <td>
-                    <a href="{{ route('editManga', $manga->id_manga) }}"><i class="bi bi-pencil"></i></a>
-                </td>
-                <td>
-                    <a onclick="return confirm('Supprimer ce manga ?')"
-                       href="{{route('removeManga',$manga->id_manga)}}"><i class="bi bi-trash"></i></a>
-                </td>
-        @endforeach
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
-
-        </tr>
-
-    </table>
+    @forelse($mangas as $manga)
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ asset('assets/images/' . $manga->couverture) }}" class="card-img-top" alt="Couverture">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $manga->titre }}</h5>
+                    <p><strong>Genre :</strong> {{ $manga->lib_genre }}</p>
+                    <p><strong>Dessinateur :</strong> {{ $manga->nom_dessinateur }}</p>
+                    <p><strong>Scénariste :</strong> {{ $manga->nom_scenariste }}</p>
+                    <p><strong>Prix :</strong> {{ $manga->prix }} €</p>
+                    <a href="{{ route('editManga', $manga->id_manga) }}" class="btn btn-warning">Modifier</a>
+                    <a href="{{ route('removeManga', $manga->id_manga) }}" class="btn btn-danger" onclick="return confirm('Supprimer ce manga ?')">Supprimer</a>
+                </div>
+            </div>
+        </div>
+    @empty
+        <p>Aucun manga trouvé.</p>
+    @endforelse
 @endsection
