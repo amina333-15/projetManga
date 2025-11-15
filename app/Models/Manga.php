@@ -11,3 +11,4 @@ class Manga extends Model
     protected $primaryKey = 'id_manga';
     public $timestamps = false;
 }
+
