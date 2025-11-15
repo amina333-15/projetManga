@@ -17,7 +17,7 @@
         @csrf
         <div class="form-group">
             <label for="genre">Genre :</label>
-            <select name="genre" id="genre" class="form-select @error('genre') border-danger @enderror">
+            <select name="genre" id="genre" class="form-select @error('genre') border-danger @enderror" required>
                 <option disabled selected>Choisir un genre</option>
                 @foreach($genres as $genre)
                     <option value="{{ $genre->id_genre }}" {{ old('genre') == $genre->id_genre ? 'selected' : '' }}>
