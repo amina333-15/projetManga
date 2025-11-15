@@ -56,15 +56,15 @@ class MangaController extends Controller
 
             $couv = $request->file('couv');
             if ($couv) {
-                $manga->couverture = $couv->getClientOriginalName();
+                $manga->couverture = time() . '_' . $couv->getClientOriginalName();
                 $couv->move(public_path('assets/images'), $manga->couverture);
             }
 
             $request->validate([
                 'titre' => 'required|max:250',
-                'genre' => 'required|exists:genre,id_genre',
-                'nom_dessinateur' => 'required|exists:dessinateur,id_dessinateur',
-                'id_scenariste' => 'required|exists:scenariste,id_scenariste',
+                'genre' => 'required|exists:genres,id_genre',
+                'nom_dessinateur' => 'required|exists:dessinateurs,id_dessinateur',
+                'id_scenariste' => 'required|exists:scenaristes,id_scenariste',
                 'prix' => 'required|numeric|between:0,1000',
             ]);
 
@@ -72,91 +72,4 @@ class MangaController extends Controller
                 throw ValidationException::withMessages(['couv' => 'Vous devez fournir une image de couverture']);
             }
 
-            $service->saveManga($manga);
-            return redirect()->route('listMangas');
-        } catch (ValidationException $exception) {
-            return $this->showManga($manga)->withErrors($exception->validator);
-        } catch (Exception $exception) {
-            return view('error', compact('exception'));
-        }
-    }
-
-    public function editManga($id)
-    {
-        try {
-            $service = new MangaService();
-            $manga = $service->getManga($id);
-            return $this->showManga($manga);
-        } catch (Exception $exception) {
-            return view('error', compact('exception'));
-        }
-    }
-
-    public function removeManga(int $id)
-    {
-        try {
-            $service = new MangaService();
-            $service->deleteManga($id);
-            return redirect()->route('listMangas')->with('success', 'Manga supprimé avec succès.');
-        } catch (Exception $exception) {
-            return view('error', compact('exception'));
-        }
-    }
-
-    private function showManga(Manga $manga)
-    {
-        $serviceG = new GenreService();
-        $genres = $serviceG->getListGenre();
-
-        $serviceD = new DessinateurService();
-        $dessinateurs = $serviceD->getListDessinateur();
-
-        $serviceS = new ScenaristeService();
-        $scenaristes = $serviceS->getListScenariste();
-
-        return view('formMangas', compact('manga', 'genres', 'dessinateurs', 'scenaristes'));
-    }
-
-    public function selectGenre()
-    {
-        try {
-            $service = new GenreService();
-            $genres = $service->getListGenre();
-            return view('formMangasGenre', compact('genres'));
-        } catch (Exception $exception) {
-            return view('error', compact('exception'));
-        }
-    }
-
-
-    public function validGenre(Request $request)
-    {
-        try {
-            $request->validate([
-                'genre' => 'required|exists:genre,id_genre'
-            ]);
-
-            $idGenre = $request->input('genre');
-            $service = new MangaService();
-            $mangas = $service->getMangasByGenre($idGenre);
-            $genre = $service->getGenre($idGenre);
-
-            foreach ($mangas as $manga) {
-                if (!file_exists(public_path('assets/images/' . $manga->couverture))) {
-                    $manga->couverture = 'erreur.png';
-                }
-            }
-
-            return view('listMangas', [
-                'mangas' => $mangas,
-                'titre' => 'Mangas du genre : ' . $genre->lib_genre
-            ]);
-        } catch (ValidationException $exception) {
-            $service = new GenreService();
-            $genres = $service->getListGenre();
-            return view('formGenre', compact('genres'))->withErrors($exception->validator);
-        } catch (Exception $exception) {
-            return view('error', compact('exception'));
-        }
-    }
-}
+            $service->saveManga($manga
