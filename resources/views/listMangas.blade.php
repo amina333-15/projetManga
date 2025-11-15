@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <h2>{{ $titre ?? 'Liste des mangas' }}</h2>
+    <h2>{{ $titre ?? 'Liste des mangas' }}</h2> 
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
